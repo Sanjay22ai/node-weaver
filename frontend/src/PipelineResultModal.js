@@ -1,10 +1,13 @@
+import { createPortal } from 'react-dom';
+
 export const PipelineResultModal = ({ open, onClose, result }) => {
   if (!open || !result) return null;
 
   const isSuccess = result.is_dag;
 
-  return (
-    <div className="fixed inset-0 bg-slate-900/40 dark:bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 transition-opacity">
+  // Teleport the modal to the document body to escape parent CSS constraints
+  return createPortal(
+    <div className="fixed inset-0 bg-slate-900/40 dark:bg-black/60 backdrop-blur-sm flex items-center justify-center z-[9999] transition-opacity">
       <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 p-8 min-w-[380px] transform transition-all">
         
         <div className="flex items-center gap-3 mb-6">
@@ -40,6 +43,7 @@ export const PipelineResultModal = ({ open, onClose, result }) => {
           Dismiss
         </button>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
