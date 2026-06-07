@@ -1,11 +1,9 @@
+import { useState } from 'react';
 import { BaseNode } from './BaseNode';
-import { useStore } from '../store';
 
 export const OutputNode = ({ id, data }) => {
-  const updateNodeField = useStore((state) => state.updateNodeField);
-  
-  const currName = data?.outputName || id.replace('customOutput-', 'output_');
-  const outputType = data?.outputType || 'Text';
+  const [currName, setCurrName] = useState(data?.outputName || "");
+  const [outputType, setOutputType] = useState(data?.outputType || "Text");
 
   return (
     <BaseNode
@@ -13,28 +11,32 @@ export const OutputNode = ({ id, data }) => {
       title="Output"
       inputs={[{ id: 'value' }]}
     >
-      <label>
-        Name
+      <div className="flex flex-col gap-1">
+        <label className="text-xs font-medium text-slate-500 dark:text-slate-400">
+          Name
+        </label>
         <input 
-          className="w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          value={currName}
-          onChange={(e) => updateNodeField(id, 'outputName', e.target.value)}
-          style={{ width: '100%' }}
+          type="text" 
+          value={currName} 
+          onChange={(e) => setCurrName(e.target.value)} 
+          placeholder={`output_${id.split('-')[1] || '1'}`}
+          className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors shadow-sm"
         />
-      </label>
+      </div>
 
-      <label>
-        Type
+      <div className="flex flex-col gap-1 mt-2">
+        <label className="text-xs font-medium text-slate-500 dark:text-slate-400">
+          Type
+        </label>
         <select 
-          className="w-full rounded-lg border border-slate-300 px-3 py-2"
-          value={outputType}
-          onChange={(e) => updateNodeField(id, 'outputType', e.target.value)}
-          style={{ width: '100%' }}
+          value={outputType} 
+          onChange={(e) => setOutputType(e.target.value)}
+          className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors shadow-sm"
         >
           <option value="Text">Text</option>
           <option value="Image">Image</option>
         </select>
-      </label>
+      </div>
     </BaseNode>
   );
 };

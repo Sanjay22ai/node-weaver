@@ -1,4 +1,6 @@
 import { Handle, Position } from "reactflow";
+import { X } from "lucide-react";
+import { useStore } from '../store';
 
 export const BaseNode = ({
   id,
@@ -9,6 +11,8 @@ export const BaseNode = ({
   width = 280,
   minHeight = 120,
 }) => {
+  const removeNode = useStore((state) => state.removeNode);
+
   return (
     <div
       className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden transition-all duration-200 hover:shadow-md hover:border-indigo-500 dark:hover:border-indigo-500 group"
@@ -27,14 +31,23 @@ export const BaseNode = ({
       ))}
 
       {/* Node Header */}
-      <div className="flex items-center px-4 py-3 bg-slate-50/50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800">
-        <div className="w-2 h-2 rounded-full bg-indigo-500 mr-2 shadow-[0_0_8px_rgba(99,102,241,0.8)]"></div>
-        <div className="font-semibold tracking-tight text-sm text-slate-800 dark:text-slate-100">
-          {title}
+      <div className="flex items-center justify-between px-4 py-3 bg-slate-50/50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800">
+        <div className="flex items-center">
+          <div className="w-2 h-2 rounded-full bg-indigo-500 mr-2 shadow-[0_0_8px_rgba(99,102,241,0.8)]"></div>
+          <div className="font-semibold tracking-tight text-sm text-slate-800 dark:text-slate-100">
+            {title}
+          </div>
         </div>
+        <button 
+          onClick={() => removeNode(id)}
+          className="text-slate-400 hover:text-red-500 dark:hover:text-red-400 transition-colors"
+          title="Delete Node"
+        >
+          <X size={16} strokeWidth={2.5} />
+        </button>
       </div>
 
-      {/* Node Body (Forms & Text) */}
+      {/* Node Body */}
       <div className="p-4 flex flex-col gap-3 text-slate-700 dark:text-slate-300 text-sm">
         {children}
       </div>

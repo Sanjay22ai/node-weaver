@@ -5,6 +5,7 @@ import ReactFlow, {
   Controls,
   Background,
   MiniMap,
+  MarkerType
 } from 'reactflow';
 
 import { shallow } from 'zustand/shallow';
@@ -142,7 +143,6 @@ export const PipelineUI = () => {
     }, []);
 
   return (
-    // FIX 1: Changed w-screen h-[75vh] to w-full h-full
     <div ref={reactFlowWrapper} className="w-full h-full">
       <ReactFlow
         nodes={nodes}
@@ -158,10 +158,19 @@ export const PipelineUI = () => {
         snapGrid={[gridSize, gridSize]}
         connectionLineType="smoothstep"
         fitView
+        deleteKeyCode={['Backspace', 'Delete']}
+        defaultEdgeOptions={{
+          type: 'smoothstep',
+          markerEnd: {
+            type: MarkerType.ArrowClosed,
+            width: 20,
+            height: 20,
+            color: '#64748b',
+          },
+          style: { strokeWidth: 2, stroke: '#64748b' },
+        }}
       >
         <Background color="#94a3b8" gap={20} size={1} />
-        
-        {/* FIX 2: Added Dark Mode styling to the MiniMap */}
         <MiniMap 
           zoomable 
           pannable 
@@ -169,9 +178,8 @@ export const PipelineUI = () => {
           maskColor="rgba(15, 23, 42, 0.2)"
           nodeColor="#4f46e5"
         />
-
         <Controls className="bg-white dark:bg-slate-800 border-none shadow-md" />
       </ReactFlow>
     </div>
   );
-}
+};

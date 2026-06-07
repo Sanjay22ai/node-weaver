@@ -1,31 +1,29 @@
+import { useState } from 'react';
 import { BaseNode } from './BaseNode';
-import { useStore } from '../store';
 
 export const TransformNode = ({ id, data }) => {
-  const updateNodeField = useStore((state) => state.updateNodeField);
-  const operation = data?.operation || 'uppercase';
+  const [script, setScript] = useState(data?.script || "");
 
   return (
     <BaseNode
       id={id}
-      title="Transform"
+      title="Data Transform"
       inputs={[{ id: 'input' }]}
       outputs={[{ id: 'output' }]}
+      width={320}
     >
-      <label>
-        Operation
-        <select 
-          className="w-full rounded-lg border border-slate-300 px-3 py-2"
-          value={operation}
-          onChange={(e) => updateNodeField(id, 'operation', e.target.value)}
-          style={{ width: '100%' }}
-        >
-          <option value="uppercase">Uppercase</option>
-          <option value="lowercase">Lowercase</option>
-          <option value="trim">Trim</option>
-          <option value="json">JSON Parse</option>
-        </select>
-      </label>
+      <div className="flex flex-col gap-1">
+        <label className="text-xs font-medium text-slate-500 dark:text-slate-400">
+          Transformation Script
+        </label>
+        <textarea 
+          value={script} 
+          onChange={(e) => setScript(e.target.value)} 
+          placeholder="return input.map(x => x.value);"
+          rows={3}
+          className="w-full px-3 py-2 font-mono text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors shadow-sm resize-none"
+        />
+      </div>
     </BaseNode>
   );
 };

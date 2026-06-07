@@ -1,11 +1,10 @@
+import { useState } from 'react';
 import { BaseNode } from './BaseNode';
-import { useStore } from '../store';
 
 export const InputNode = ({ id, data }) => {
-  const updateNodeField = useStore((state) => state.updateNodeField);
-  
-  const currName = data?.inputName || id.replace('customInput-', 'input_');
-  const inputType = data?.inputType || 'Text';
+  // 1. Initialize with an empty string so the placeholder is visible by default
+  const [currName, setCurrName] = useState(data?.inputName || "");
+  const [inputType, setInputType] = useState(data?.inputType || "Text");
 
   return (
     <BaseNode
@@ -13,28 +12,34 @@ export const InputNode = ({ id, data }) => {
       title="Input"
       outputs={[{ id: 'value' }]}
     >
-      <label>
-        Name
-        <input
-          className="w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          value={currName}
-          onChange={(e) => updateNodeField(id, 'inputName', e.target.value)}
-          style={{ width: '100%' }}
+      <div className="flex flex-col gap-1">
+        <label className="text-xs font-medium text-slate-500 dark:text-slate-400">
+          Name
+        </label>
+        <input 
+          type="text" 
+          value={currName} 
+          onChange={(e) => setCurrName(e.target.value)} 
+          // 2. Move the hint text here
+          placeholder={`input_${id.split('-')[1] || '1'}`}
+          // 3. Apply the strict dark mode UI classes
+          className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors shadow-sm"
         />
-      </label>
+      </div>
 
-      <label>
-        Type
-        <select
-          className="w-full rounded-lg border border-slate-300 px-3 py-2"
-          value={inputType}
-          onChange={(e) => updateNodeField(id, 'inputType', e.target.value)}
-          style={{ width: '100%' }}
+      <div className="flex flex-col gap-1 mt-2">
+        <label className="text-xs font-medium text-slate-500 dark:text-slate-400">
+          Type
+        </label>
+        <select 
+          value={inputType} 
+          onChange={(e) => setInputType(e.target.value)}
+          className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors shadow-sm"
         >
           <option value="Text">Text</option>
           <option value="File">File</option>
         </select>
-      </label>
+      </div>
     </BaseNode>
   );
 };

@@ -41,6 +41,15 @@ export const useStore = create((set, get) => ({
         edges: addEdge({...connection, type: 'smoothstep', animated: true, markerEnd: {type: MarkerType.Arrow, height: '20px', width: '20px'}}, get().edges),
       });
     },
+    removeNode: (nodeId) => {
+    set((state) => ({
+      nodes: state.nodes.filter((n) => n.id !== nodeId),
+      // Automatically scrub any edges connected to the deleted node
+      edges: state.edges.filter(
+        (e) => e.source !== nodeId && e.target !== nodeId
+      ),
+    }));
+  },
     updateNodeField: (nodeId, fieldName, fieldValue) => {
   set({
     nodes: get().nodes.map((node) => {
