@@ -142,46 +142,36 @@ export const PipelineUI = () => {
     }, []);
 
   return (
-    <div
-      ref={reactFlowWrapper}
-      className="w-screen h-[75vh]"
-    >
+    // FIX 1: Changed w-screen h-[75vh] to w-full h-full
+    <div ref={reactFlowWrapper} className="w-full h-full">
       <ReactFlow
         nodes={nodes}
         edges={edges}
-        onNodesChange={
-          onNodesChange
-        }
-        onEdgesChange={
-          onEdgesChange
-        }
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         onDrop={onDrop}
         onDragOver={onDragOver}
-        onInit={
-          setReactFlowInstance
-        }
+        onInit={setReactFlowInstance}
         nodeTypes={nodeTypes}
         proOptions={proOptions}
-        snapGrid={[
-          gridSize,
-          gridSize,
-        ]}
+        snapGrid={[gridSize, gridSize]}
         connectionLineType="smoothstep"
         fitView
       >
-        <Background
-          color="#d1d5db"
-          gap={20}
+        <Background color="#94a3b8" gap={20} size={1} />
+        
+        {/* FIX 2: Added Dark Mode styling to the MiniMap */}
+        <MiniMap 
+          zoomable 
+          pannable 
+          className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg shadow-md"
+          maskColor="rgba(15, 23, 42, 0.2)"
+          nodeColor="#4f46e5"
         />
 
-        <MiniMap
-          zoomable
-          pannable
-        />
-
-        <Controls />
+        <Controls className="bg-white dark:bg-slate-800 border-none shadow-md" />
       </ReactFlow>
     </div>
   );
-};
+}
